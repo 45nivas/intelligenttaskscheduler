@@ -57,11 +57,3 @@ Unit tests are provided in the `tests` directory. You can run the tests using:
 ```bash
 pytest tests/
 ```
-
-## Future Enhancements
-- Integration of machine learning models for smarter task recommendations.
-- Development of a web dashboard for easier task management.
-- Personal productivity models to optimize scheduling based on user behavior.
-
-## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
