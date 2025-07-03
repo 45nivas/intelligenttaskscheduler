@@ -1,0 +1,78 @@
+[
+    {
+        "title": "Task 1",
+        "deadline": "2023-10-15T17:00:00Z",
+        "priority": "high",
+        "estimated_hours": 2.5,
+        "id": 1,
+        "tags": [
+            "development",
+            "urgent"
+        ],
+        "earliest_start": "2023-10-14T09:00:00Z",
+        "dependencies": [],
+        "start_time": "2023-10-14T09:00:00",
+        "end_time": "2023-10-14T11:30:00"
+    },
+    {
+        "title": "Task 2",
+        "deadline": "2023-10-16T17:00:00Z",
+        "priority": "med",
+        "estimated_hours": 1.0,
+        "id": 2,
+        "tags": [
+            "admin"
+        ],
+        "earliest_start": "2023-10-15T09:00:00Z",
+        "dependencies": [
+            1
+        ],
+        "start_time": "2023-10-14T12:00:00",
+        "end_time": "2023-10-14T13:00:00"
+    },
+    {
+        "title": "Task 4",
+        "deadline": "2023-10-18T17:00:00Z",
+        "priority": "high",
+        "estimated_hours": 4.0,
+        "id": 4,
+        "tags": [
+            "development"
+        ],
+        "earliest_start": "2023-10-17T09:00:00Z",
+        "dependencies": [
+            2
+        ],
+        "start_time": "2023-10-14T15:00:00",
+        "end_time": "2023-10-14T19:00:00"
+    },
+    {
+        "title": "Task 3",
+        "deadline": "2023-10-20T17:00:00Z",
+        "priority": "low",
+        "estimated_hours": 3.0,
+        "id": 3,
+        "tags": [
+            "creative"
+        ],
+        "earliest_start": "2023-10-18T09:00:00Z",
+        "dependencies": [],
+        "start_time": "2023-10-14T18:00:00",
+        "end_time": "2023-10-14T21:00:00"
+    },
+    {
+        "title": "Task 5",
+        "deadline": "2023-10-22T17:00:00Z",
+        "priority": "med",
+        "estimated_hours": 2.0,
+        "id": 5,
+        "tags": [
+            "admin",
+            "review"
+        ],
+        "earliest_start": "2023-10-21T09:00:00Z",
+        "dependencies": [],
+        "start_time": "2023-10-14T21:00:00",
+        "end_time": "2023-10-14T23:00:00"
+    }
+]

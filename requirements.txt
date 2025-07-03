@@ -1,0 +1,4 @@
+pydantic
+python-dateutil
+ortools
+rich
