@@ -1,156 +1,131 @@
-# Intelligent Task Scheduler
+[![Streamlit App](https://img.shields.io/badge/🚀%20Live%20App-Click%20Here-success?style=for-the-badge)](https://intelligenttaskscheduler-gyfj8zaxmbwj9v3k9qw2cj.streamlit.app/)
 
-## Overview
-The Intelligent Task Scheduler is a smart scheduling system designed to optimize task management by considering deadlines, priorities, estimated effort, and dependencies. It provides a modular architecture that allows for easy extension and integration of advanced algorithms in the future.
+# 🧠 Intelligent Task Scheduler
 
-## Features
-- **Task Ingestion & Validation**: Load tasks from JSON or CSV files with validation for required fields.
-- **Priority Scoring**: Compute a numeric score for tasks based on urgency, priority level, and effort penalty.
-- **Scheduling Engine**: Utilize OR-Tools CP-SAT or a greedy fallback for task scheduling, respecting deadlines and dependencies.
-- **Human-Centric Tweaks**: Adjust task scheduling based on user preferences and task types.
-- **Output Formats**: Generate console tables, JSON files, and ICS calendar files for scheduled tasks.
-
-## Project Structure
-```
-intelligent-task-scheduler
-├── scheduler
-│   ├── __init__.py
-│   ├── task.py
-│   ├── loader.py
-│   ├── scorer.py
-│   ├── engine.py
-│   ├── calendar_utils.py
-│   └── formatter.py
-├── cli.py
-├── requirements.txt
-├── sample_tasks.json
-├── tests
-│   ├── __init__.py
-│   └── test_engine.py
-└── README.md
-```
-
-## Installation
-To set up the project, clone the repository and install the required dependencies:
-
-```bash
-git clone <repository-url>
-cd intelligent-task-scheduler
-pip install -r requirements.txt
-```
-
-## Usage
-You can run the scheduling system from the command line. Use the following command to load tasks from a specified file and generate a schedule:
-
-```bash
-python cli.py --input sample_tasks.json
-```
-
-### CLI Options
-- `--input FILE`: Specify the input file (JSON or CSV) containing tasks.
-- `--gantt`: Generate a Gantt-style ASCII chart of the schedule.
-- Additional flags for tuning scoring weights and working hours can be added.
-
-## Testing
-Unit tests are provided in the `tests` directory. You can run the tests using:
-
-```bash
-pytest tests/
-```
-# Smart Task Scheduler 🧠
-
-A human-centered task scheduler built using Python and Streamlit. It automatically generates an optimal daily schedule for your tasks by considering:
-
-* **Priority** (high / med / low)
-* **Deadline**
-* **Earliest Start**
-* **Estimated Hours**
-* Human productivity constraints (9 AM – 5 PM, 1 hour lunch, max \~5.5 hours/day)
+A smart and human-centered scheduling system to optimize daily task planning based on deadlines, priorities, effort, and human productivity patterns.  
+Built with modular Python and a beautiful Streamlit interface.
 
 ---
 
-## Features
+## 🔧 Features
 
-* Simple web interface with task input form
-* Gantt-style timeline chart and data table output
-* Smart greedy scheduling logic based on urgency and effort
-* Auto-handles work hours and lunch breaks
+- ✅ Greedy Scheduling Algorithm with deadline, priority & effort scoring
+- 🧍 Human Productivity Aware: 9 AM–5 PM, lunch breaks, 5.5h/day cap
+- 📊 Gantt-style timeline visualization (via Streamlit)
+- 📋 Console / JSON / ICS outputs (via CLI)
+- ⚙️ Extendable engine with dependency support (planned)
 
 ---
 
-## Usage
+## 🖥️ Usage Options
 
-### 1. Install requirements
+### 1. Streamlit App (Web Interface)
 
+#### 🔹 Install Requirements
 ```bash
 pip install streamlit pandas altair
 ```
 
-### 2. Run the app
-
+#### 🔹 Launch the App
 ```bash
 streamlit run main.py
 ```
 
-### 3. Add Tasks via Sidebar Form
+#### 🔹 Use the Sidebar Form
+- Task Title
+- Priority (`high`, `med`, `low`)
+- Deadline & Earliest Start (e.g., `2024-07-05`)
+- Estimated Hours (e.g., `2.0`)
 
-Fields:
-
-* **Task Title**: Name of the task
-* **Priority**: Choose high, medium, or low
-* **Deadline**: The last date by which task must finish
-* **Can Start On**: Optional earliest allowed start date
-* **Estimated Hours**: How long the task takes (0.5–8 hours)
-
-### 4. Click "Generate Schedule"
-
-* See your task schedule as a **table** and **timeline graph**.
+📌 Click **"Generate Schedule"** to view a personalized task table and Gantt chart.
 
 ---
 
-## Scheduling Logic
+### 2. CLI Mode (Engine-Based)
 
-### Total Score = Urgency + Priority Weight
+#### 🔹 Run via Command Line
+```bash
+python engine.py --input sample_tasks.json
+```
 
-* Urgency = `30 - days_until_deadline`
-* Priority: high = 30, med = 20, low = 10
-* Tasks with highest total score scheduled first
-
-### Human Productivity Rules:
-
-* Work day: **9 AM – 5 PM**
-* **Lunch break**: 12 PM – 1 PM
-* Max \~5.5 productive hours per day
-* Tasks fragment intelligently around lunch
+#### 🔹 CLI Options
+- `--input FILE`: JSON or CSV task file  
+- `--gantt`: Show ASCII Gantt chart  
+- `--ics`: Export to .ics calendar file  
+- `--weights`: Tune priority vs urgency impact  
 
 ---
 
-## Future Ideas
+## ⚙️ Scheduling Logic
 
-* Support task dependencies
-* Support recurring tasks
-* Personal energy curve modeling
-* Export to Google Calendar or .ics
+**Score = Urgency + Priority Weight**
+
+- Urgency = `30 - days_until_deadline`
+- Priority Scores:  
+  - `high = 30`  
+  - `med = 20`  
+  - `low = 10`  
+- Tasks are sorted in descending score order.
 
 ---
 
-## Example
+## 👤 Human-Centered Rules
 
-**Input Tasks:**
+- Work Hours: **9:00 AM – 5:00 PM**
+- Lunch Break: **12:00 PM – 1:00 PM**
+- Max Effort/Day: **5.5 hours**
+- Tasks are split smartly across breaks and days.
 
+---
+
+## ✅ Example
+
+### Input (`sample_tasks.json`)
 ```json
 [
-  {"title": "Task 1", "priority": "high", "deadline": "2023-10-15", "earliest_start": "2023-10-14", "estimated_hours": 2.5},
-  {"title": "Task 2", "priority": "med", "deadline": "2023-10-16", "earliest_start": "2023-10-15", "estimated_hours": 1.0}
+  {
+    "title": "Task A",
+    "priority": "high",
+    "deadline": "2024-07-05",
+    "earliest_start": "2024-07-03",
+    "estimated_hours": 2.5
+  },
+  {
+    "title": "Task B",
+    "priority": "med",
+    "deadline": "2024-07-06",
+    "earliest_start": "2024-07-04",
+    "estimated_hours": 1.5
+  }
 ]
 ```
 
-**Output:**
-
-* Task 1 scheduled before Task 2
-* Shows exact start/end timestamps for each task
-* Honors work day boundaries
+### Output
+- Task A is scheduled before Task B  
+- Time blocks fit into work hours  
+- Tasks split across lunch if needed  
 
 ---
 
-Made with ❤️ using Python & Streamlit.
+## 📦 Project Structure
+```
+intelligent-task-scheduler/
+├── streamlit.py               # Streamlit UI
+├── engine.py             # CLI backend
+├── sample_tasks.json     # Example input
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## 🔮 Future Enhancements
+
+- ⛓️ Task dependency graph visualization  
+- 🔁 Recurring task support  
+- ⚡ Energy rhythm-based scheduling  
+- 📅 Google Calendar integration  
+
+---
+
+
