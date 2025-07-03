@@ -8,7 +8,7 @@ def generate_schedule(tasks: List[dict], daily_effort_cap: float = 6.0) -> List[
     """
     priority_map = {"high": 3, "med": 2, "low": 1}
 
-    # Score function (urgency + priority)
+    
     def score(task):
         deadline = task["deadline"]
         if isinstance(deadline, str):
@@ -18,14 +18,14 @@ def generate_schedule(tasks: List[dict], daily_effort_cap: float = 6.0) -> List[
         priority_score = priority_map.get(task["priority"], 1) * 10
         return urgency_score + priority_score
 
-    # Build dependency map
+    
     id_to_task = {t["id"]: t for t in tasks}
     dep_finish_times = {}
 
-    # Sort tasks by score (higher = earlier)
+    
     sorted_tasks = sorted(tasks, key=score, reverse=True)
 
-    # Find earliest start among all tasks
+    
     earliest_starts = []
     for t in sorted_tasks:
         es = t.get("earliest_start")
@@ -47,37 +47,37 @@ def generate_schedule(tasks: List[dict], daily_effort_cap: float = 6.0) -> List[
     scheduled = []
     day_hours_used = 0.0
 
-    # Helper to get the next available workday at 09:00
+    
     def next_workday(dt):
         return (dt + datetime.timedelta(days=1)).replace(hour=9, minute=0, second=0, microsecond=0)
 
     for task in sorted_tasks:
         est = float(task["estimated_hours"])
-        # Respect dependencies: must start after all dependencies finish
+        
         dep_end = current_day
         for dep_id in task.get("dependencies", []):
             if dep_id in dep_finish_times:
                 dep_end = max(dep_end, dep_finish_times[dep_id])
-        # Respect earliest_start
+        
         task_earliest = task.get("earliest_start")
         if task_earliest:
             if isinstance(task_earliest, str):
                 task_earliest = datetime.datetime.fromisoformat(task_earliest.replace("Z", "+00:00"))
             dep_end = max(dep_end, task_earliest.replace(tzinfo=datetime.timezone.utc))
-        # Move to next workday if needed
+        
         candidate_start = dep_end
         while True:
-            # If not a workday, move to next workday
+            
             if candidate_start.time() < WORK_START or candidate_start.time() >= WORK_END:
                 candidate_start = candidate_start.replace(hour=9, minute=0, second=0, microsecond=0)
                 candidate_start = next_workday(candidate_start)
                 day_hours_used = 0.0
-            # If daily cap exceeded, move to next day
+            
             if day_hours_used + est > daily_effort_cap or (candidate_start.hour + est) > 17:
                 candidate_start = next_workday(candidate_start)
                 day_hours_used = 0.0
                 continue
-            # If lunch break is in the way, skip lunch
+            
             if candidate_start.time() < LUNCH_START and (candidate_start + datetime.timedelta(hours=est)).time() > LUNCH_START:
                 before_lunch = (datetime.datetime.combine(candidate_start.date(), LUNCH_START) - candidate_start).total_seconds() / 3600
                 after_lunch = est - before_lunch
@@ -91,10 +91,10 @@ def generate_schedule(tasks: List[dict], daily_effort_cap: float = 6.0) -> List[
                 day_hours_used += before_lunch
                 est = after_lunch
                 continue
-            # Otherwise, schedule task
+            
             start_time = candidate_start
             end_time = start_time + datetime.timedelta(hours=est)
-            # If end_time exceeds work hours, move to next day
+            
             if end_time.time() > WORK_END or day_hours_used + est > daily_effort_cap:
                 candidate_start = next_workday(candidate_start)
                 day_hours_used = 0.0
